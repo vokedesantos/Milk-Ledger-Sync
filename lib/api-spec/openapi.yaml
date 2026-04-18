@@ -17,6 +17,8 @@ tags:
     description: Offline sync operations
   - name: dashboard
     description: Dashboard statistics
+  - name: contacts
+    description: Farmers and customers contacts
 
 paths:
   /healthz:
@@ -113,6 +115,92 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+
+  /contacts:
+    get:
+      operationId: listContacts
+      tags: [contacts]
+      summary: List all contacts for the current user
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [farmer, customer]
+      responses:
+        "200":
+          description: List of contacts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contact"
+    post:
+      operationId: createContact
+      tags: [contacts]
+      summary: Create a new contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateContactBody"
+      responses:
+        "201":
+          description: Contact created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contact"
+
+  /contacts/{id}:
+    put:
+      operationId: updateContact
+      tags: [contacts]
+      summary: Update a contact
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateContactBody"
+      responses:
+        "200":
+          description: Contact updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contact"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteContact
+      tags: [contacts]
+      summary: Delete a contact
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Contact deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
 
   /records:
     get:
@@ -328,6 +416,45 @@ components:
         - user
         - message
 
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        type:
+          type: string
+          enum: [farmer, customer]
+        name:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - userId
+        - type
+        - name
+        - createdAt
+
+    CreateContactBody:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [farmer, customer]
+        name:
+          type: string
+        phone:
+          type: string
+          nullable: true
+      required:
+        - type
+        - name
+
     Record:
       type: object
       properties:
@@ -340,6 +467,9 @@ components:
           enum: [farmer, customer]
         personName:
           type: string
+        phone:
+          type: string
+          nullable: true
         date:
           type: string
         amountLitres:
@@ -375,6 +505,9 @@ components:
           enum: [farmer, customer]
         personName:
           type: string
+        phone:
+          type: string
+          nullable: true
         date:
           type: string
         amountLitres:
