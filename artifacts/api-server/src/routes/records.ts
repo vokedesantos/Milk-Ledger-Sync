@@ -24,6 +24,7 @@ function formatRecord(r: typeof recordsTable.$inferSelect) {
     userId: r.userId,
     type: r.type,
     personName: r.personName,
+    phone: r.phone ?? null,
     date: r.date,
     amountLitres: parseFloat(r.amountLitres),
     pricePerLitre: parseFloat(r.pricePerLitre),
@@ -70,7 +71,7 @@ router.post("/", async (req: Request, res: Response) => {
     return;
   }
 
-  const { type, personName, date, amountLitres, pricePerLitre, localId } =
+  const { type, personName, phone, date, amountLitres, pricePerLitre, localId } =
     parsed.data;
 
   const totalPrice = Number(amountLitres) * Number(pricePerLitre);
@@ -81,6 +82,7 @@ router.post("/", async (req: Request, res: Response) => {
       userId,
       type: type as "farmer" | "customer",
       personName,
+      phone: phone ?? null,
       date,
       amountLitres: String(amountLitres),
       pricePerLitre: String(pricePerLitre),

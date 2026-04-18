@@ -7,6 +7,7 @@ import authRouter from "./routes/auth";
 import recordsRouter from "./routes/records";
 import syncRouter from "./routes/sync";
 import dashboardRouter from "./routes/dashboard";
+import contactsRouter from "./routes/contacts";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
@@ -60,5 +61,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/records", recordsRouter);
 app.use("/api/sync", syncRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/contacts", contactsRouter);
 
 export default app;

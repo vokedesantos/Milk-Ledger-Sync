@@ -38,6 +38,36 @@ export interface AuthResponse {
   message: string;
 }
 
+export type ContactType = (typeof ContactType)[keyof typeof ContactType];
+
+export const ContactType = {
+  farmer: "farmer",
+  customer: "customer",
+} as const;
+
+export interface Contact {
+  id: number;
+  userId: number;
+  type: ContactType;
+  name: string;
+  phone?: string | null;
+  createdAt: string;
+}
+
+export type CreateContactBodyType =
+  (typeof CreateContactBodyType)[keyof typeof CreateContactBodyType];
+
+export const CreateContactBodyType = {
+  farmer: "farmer",
+  customer: "customer",
+} as const;
+
+export interface CreateContactBody {
+  type: CreateContactBodyType;
+  name: string;
+  phone?: string | null;
+}
+
 export type RecordType = (typeof RecordType)[keyof typeof RecordType];
 
 export const RecordType = {
@@ -50,6 +80,7 @@ export interface Record {
   userId: number;
   type: RecordType;
   personName: string;
+  phone?: string | null;
   date: string;
   amountLitres: number;
   pricePerLitre: number;
@@ -70,6 +101,7 @@ export const CreateRecordBodyType = {
 export interface CreateRecordBody {
   type: CreateRecordBodyType;
   personName: string;
+  phone?: string | null;
   date: string;
   amountLitres: number;
   pricePerLitre: number;
@@ -95,6 +127,18 @@ export interface DashboardStats {
   totalRecords: number;
   netBalance: number;
 }
+
+export type ListContactsParams = {
+  type?: ListContactsType;
+};
+
+export type ListContactsType =
+  (typeof ListContactsType)[keyof typeof ListContactsType];
+
+export const ListContactsType = {
+  farmer: "farmer",
+  customer: "customer",
+} as const;
 
 export type ListRecordsParams = {
   type?: ListRecordsType;

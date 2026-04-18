@@ -11,6 +11,7 @@ import Dashboard from "@/pages/dashboard";
 import FarmerCollection from "@/pages/farmer";
 import CustomerSale from "@/pages/customer";
 import Records from "@/pages/records";
+import Contacts from "@/pages/contacts";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/farmer" component={FarmerCollection} />
       <Route path="/customer" component={CustomerSale} />
       <Route path="/records" component={Records} />
+      <Route path="/contacts" component={Contacts} />
       <Route component={NotFound} />
     </Switch>
   );

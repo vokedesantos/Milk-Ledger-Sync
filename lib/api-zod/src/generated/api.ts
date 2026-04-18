@@ -56,6 +56,65 @@ export const GetMeResponse = zod.object({
 });
 
 /**
+ * @summary List all contacts for the current user
+ */
+export const ListContactsQueryParams = zod.object({
+  type: zod.enum(["farmer", "customer"]).optional(),
+});
+
+export const ListContactsResponseItem = zod.object({
+  id: zod.number(),
+  userId: zod.number(),
+  type: zod.enum(["farmer", "customer"]),
+  name: zod.string(),
+  phone: zod.string().nullish(),
+  createdAt: zod.string(),
+});
+export const ListContactsResponse = zod.array(ListContactsResponseItem);
+
+/**
+ * @summary Create a new contact
+ */
+export const CreateContactBody = zod.object({
+  type: zod.enum(["farmer", "customer"]),
+  name: zod.string(),
+  phone: zod.string().nullish(),
+});
+
+/**
+ * @summary Update a contact
+ */
+export const UpdateContactParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateContactBody = zod.object({
+  type: zod.enum(["farmer", "customer"]),
+  name: zod.string(),
+  phone: zod.string().nullish(),
+});
+
+export const UpdateContactResponse = zod.object({
+  id: zod.number(),
+  userId: zod.number(),
+  type: zod.enum(["farmer", "customer"]),
+  name: zod.string(),
+  phone: zod.string().nullish(),
+  createdAt: zod.string(),
+});
+
+/**
+ * @summary Delete a contact
+ */
+export const DeleteContactParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const DeleteContactResponse = zod.object({
+  message: zod.string(),
+});
+
+/**
  * @summary List all records for the current user
  */
 export const ListRecordsQueryParams = zod.object({
@@ -69,6 +128,7 @@ export const ListRecordsResponseItem = zod.object({
   userId: zod.number(),
   type: zod.enum(["farmer", "customer"]),
   personName: zod.string(),
+  phone: zod.string().nullish(),
   date: zod.string(),
   amountLitres: zod.number(),
   pricePerLitre: zod.number(),
@@ -85,6 +145,7 @@ export const ListRecordsResponse = zod.array(ListRecordsResponseItem);
 export const CreateRecordBody = zod.object({
   type: zod.enum(["farmer", "customer"]),
   personName: zod.string(),
+  phone: zod.string().nullish(),
   date: zod.string(),
   amountLitres: zod.number(),
   pricePerLitre: zod.number(),
@@ -103,6 +164,7 @@ export const GetRecordResponse = zod.object({
   userId: zod.number(),
   type: zod.enum(["farmer", "customer"]),
   personName: zod.string(),
+  phone: zod.string().nullish(),
   date: zod.string(),
   amountLitres: zod.number(),
   pricePerLitre: zod.number(),
@@ -131,6 +193,7 @@ export const SyncRecordsBody = zod.object({
     zod.object({
       type: zod.enum(["farmer", "customer"]),
       personName: zod.string(),
+      phone: zod.string().nullish(),
       date: zod.string(),
       amountLitres: zod.number(),
       pricePerLitre: zod.number(),
@@ -147,6 +210,7 @@ export const SyncRecordsResponse = zod.object({
       userId: zod.number(),
       type: zod.enum(["farmer", "customer"]),
       personName: zod.string(),
+      phone: zod.string().nullish(),
       date: zod.string(),
       amountLitres: zod.number(),
       pricePerLitre: zod.number(),
@@ -186,6 +250,7 @@ export const GetRecentActivityResponseItem = zod.object({
   userId: zod.number(),
   type: zod.enum(["farmer", "customer"]),
   personName: zod.string(),
+  phone: zod.string().nullish(),
   date: zod.string(),
   amountLitres: zod.number(),
   pricePerLitre: zod.number(),

@@ -71,6 +71,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     { href: "/", label: "Dashboard", icon: <Home className="w-5 h-5" /> },
     { href: "/farmer", label: "Collect Milk", icon: <Truck className="w-5 h-5" /> },
     { href: "/customer", label: "Sell Milk", icon: <Users className="w-5 h-5" /> },
+    { href: "/contacts", label: "Contacts", icon: <Users className="w-5 h-5" /> },
     { href: "/records", label: "All Records", icon: <FileText className="w-5 h-5" /> },
   ];
 
