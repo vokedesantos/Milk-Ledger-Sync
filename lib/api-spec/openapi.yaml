@@ -1,22 +1,29 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Milk Collection System API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: records
+    description: Milk collection records
+  - name: sync
+    description: Offline sync operations
+  - name: dashboard
+    description: Dashboard statistics
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +31,230 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterBody"
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "409":
+          description: Username already taken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginBody"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout user
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /records:
+    get:
+      operationId: listRecords
+      tags: [records]
+      summary: List all records for the current user
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [farmer, customer]
+        - name: startDate
+          in: query
+          schema:
+            type: string
+        - name: endDate
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Record"
+    post:
+      operationId: createRecord
+      tags: [records]
+      summary: Create a new milk record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRecordBody"
+      responses:
+        "201":
+          description: Record created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Record"
+
+  /records/{id}:
+    get:
+      operationId: getRecord
+      tags: [records]
+      summary: Get a specific record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Record found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Record"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteRecord
+      tags: [records]
+      summary: Delete a record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Record deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /sync:
+    post:
+      operationId: syncRecords
+      tags: [sync]
+      summary: Sync offline records to server
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SyncBody"
+      responses:
+        "200":
+          description: Sync complete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncResponse"
+
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get dashboard totals and summary
+      responses:
+        "200":
+          description: Dashboard statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /dashboard/recent:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Get recent records activity
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Record"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +265,179 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - username
+        - createdAt
+
+    RegisterBody:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+
+    LoginBody:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        message:
+          type: string
+      required:
+        - user
+        - message
+
+    Record:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        type:
+          type: string
+          enum: [farmer, customer]
+        personName:
+          type: string
+        date:
+          type: string
+        amountLitres:
+          type: number
+        pricePerLitre:
+          type: number
+        totalPrice:
+          type: number
+        localId:
+          type: string
+          nullable: true
+        synced:
+          type: boolean
+        createdAt:
+          type: string
+      required:
+        - id
+        - userId
+        - type
+        - personName
+        - date
+        - amountLitres
+        - pricePerLitre
+        - totalPrice
+        - synced
+        - createdAt
+
+    CreateRecordBody:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [farmer, customer]
+        personName:
+          type: string
+        date:
+          type: string
+        amountLitres:
+          type: number
+        pricePerLitre:
+          type: number
+        localId:
+          type: string
+      required:
+        - type
+        - personName
+        - date
+        - amountLitres
+        - pricePerLitre
+
+    SyncBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateRecordBody"
+      required:
+        - records
+
+    SyncResponse:
+      type: object
+      properties:
+        synced:
+          type: integer
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/Record"
+      required:
+        - synced
+        - records
+
+    DashboardStats:
+      type: object
+      properties:
+        farmerTotalLitres:
+          type: number
+        farmerTotalAmount:
+          type: number
+        farmerRecordCount:
+          type: integer
+        customerTotalLitres:
+          type: number
+        customerTotalAmount:
+          type: number
+        customerRecordCount:
+          type: integer
+        totalRecords:
+          type: integer
+        netBalance:
+          type: number
+      required:
+        - farmerTotalLitres
+        - farmerTotalAmount
+        - farmerRecordCount
+        - customerTotalLitres
+        - customerTotalAmount
+        - customerRecordCount
+        - totalRecords
+        - netBalance

@@ -1,0 +1,16 @@
+{
+  "name": "Milk Collection System",
+  "short_name": "MilkSys",
+  "description": "A field tool for dairy farmers and milk vendors.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdfaf7",
+  "theme_color": "#26593b",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
