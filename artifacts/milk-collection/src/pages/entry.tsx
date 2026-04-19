@@ -81,7 +81,7 @@ const TYPE_CONFIG = {
     smsDesc: (name: string, phone: string) =>
       `Send a receipt to ${name}${phone ? ` (${phone})` : ""}?`,
     smsMsg: (r: any) =>
-      `Received ${r.amountLitres}L from ${r.personName} at KES ${r.pricePerLitre}/L. Total: KES ${r.totalPrice}. Thank you!`,
+      `Dear ${r.personName}, ${r.amountLitres}L of milk has been collected on ${r.date} at KES ${r.pricePerLitre}/L. Total: KES ${r.totalPrice}. Thank you!`,
     defaultPrice: 50,
   },
   customer: {
