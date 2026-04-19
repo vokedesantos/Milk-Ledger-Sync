@@ -1,7 +1,7 @@
 import { useGetDashboardStats, useListRecords, useGetRecentActivity } from "@workspace/api-client-react";
 import { AppLayout } from "@/components/layout/app-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Droplet, Wallet, TrendingUp, ArrowRightLeft } from "lucide-react";
+import { Droplet, Wallet, TrendingUp, ArrowRightLeft, FileText } from "lucide-react";
 import { format } from "date-fns";
 
 export default function Dashboard() {

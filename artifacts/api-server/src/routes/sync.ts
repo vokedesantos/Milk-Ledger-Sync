@@ -5,12 +5,10 @@ import { SyncRecordsBody } from "@workspace/api-zod";
 
 const router = Router();
 
-function requireAuth(req: Request, res: Response): number | null {
-  if (!req.session.userId) {
-    res.status(401).json({ error: "Unauthorized" });
-    return null;
-  }
-  return req.session.userId;
+const DEFAULT_USER_ID = 1;
+
+function requireAuth(_req: Request, _res: Response): number | null {
+  return DEFAULT_USER_ID;
 }
 
 router.post("/", async (req: Request, res: Response) => {
