@@ -31,8 +31,8 @@ export default function Dashboard() {
     <AppLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Overview of today's collections and sales.</p>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">Moscat Dairy</h1>
+          <p className="text-muted-foreground mt-1">Overview of collections and sales.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
