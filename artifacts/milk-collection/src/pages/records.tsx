@@ -86,11 +86,12 @@ export default function Records() {
   // ── Farmer CSV export ────────────────────────────────────────────────────
   const exportFarmerCSV = () => {
     const dateLabel = `${format(weekStart, "MMM d")} - ${format(new Date(), "MMM d, yyyy")}`;
-    const header = ["Farmer Name", "Phone", "Date", "Litres (L)", "Price/L (KES)", "Total (KES)"];
+    const header = ["Farmer Name", "Phone", "Region", "Date", "Litres (L)", "Price/L (KES)", "Total (KES)"];
 
     const rows = weeklyFarmers.map((r) => [
       r.personName,
       (r as any).phone ?? "",
+      (r as any).region ?? "",
       format(parseISO(r.date), "MMM d, yyyy"),
       String(r.amountLitres),
       String(r.pricePerLitre),
@@ -103,6 +104,7 @@ export default function Records() {
       `TOTAL — ${name}`,
       "",
       "",
+      "",
       String(recs.reduce((s, r) => s + r.amountLitres, 0)),
       "",
       String(recs.reduce((s, r) => s + r.totalPrice, 0)),
@@ -112,6 +114,7 @@ export default function Records() {
     const grandTotal = weeklyFarmers.reduce((s, r) => s + r.totalPrice, 0);
     const grandRow = [
       "GRAND TOTAL — ALL FARMERS",
+      "",
       "",
       "",
       String(grandLitres),
@@ -139,6 +142,7 @@ export default function Records() {
     const header = [
       "Customer Name",
       "Phone",
+      "Region",
       "Date",
       "Litres (L)",
       "Price/L (KES)",
@@ -149,6 +153,7 @@ export default function Records() {
     const rows = weeklyCustomers.map((r) => [
       r.personName,
       (r as any).phone ?? "",
+      (r as any).region ?? "",
       format(parseISO(r.date), "MMM d, yyyy"),
       String(r.amountLitres),
       String(r.pricePerLitre),
@@ -158,7 +163,7 @@ export default function Records() {
 
     const grandLitres = weeklyCustomers.reduce((s, r) => s + r.amountLitres, 0);
     const grandTotal = weeklyCustomers.reduce((s, r) => s + r.totalPrice, 0);
-    const grandRow = ["GRAND TOTAL", "", "", String(grandLitres), "", String(grandTotal), ""];
+    const grandRow = ["GRAND TOTAL", "", "", "", String(grandLitres), "", String(grandTotal), ""];
 
     const allRows = [
       [`Moscat Dairy — Customer Report (${dateLabel})`],

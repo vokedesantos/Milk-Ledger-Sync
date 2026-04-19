@@ -13,6 +13,7 @@ export const contactsTable = pgTable("contacts", {
   type: contactTypeEnum("type").notNull(),
   name: text("name").notNull(),
   phone: text("phone"),
+  region: text("region"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

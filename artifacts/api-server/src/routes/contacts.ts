@@ -18,6 +18,7 @@ function formatContact(c: typeof contactsTable.$inferSelect) {
     type: c.type,
     name: c.name,
     phone: c.phone ?? null,
+    region: c.region ?? null,
     createdAt: c.createdAt.toISOString(),
   };
 }
@@ -51,7 +52,7 @@ router.post("/", async (req: Request, res: Response) => {
     return;
   }
 
-  const { type, name, phone } = parsed.data;
+  const { type, name, phone, region } = parsed.data;
 
   const [contact] = await db
     .insert(contactsTable)
@@ -60,6 +61,7 @@ router.post("/", async (req: Request, res: Response) => {
       type: type as "farmer" | "customer",
       name,
       phone: phone ?? null,
+      region: region ?? null,
     })
     .returning();
 
@@ -93,11 +95,11 @@ router.put("/:id", async (req: Request, res: Response) => {
     return;
   }
 
-  const { type, name, phone } = parsed.data;
+  const { type, name, phone, region } = parsed.data;
 
   const [contact] = await db
     .update(contactsTable)
-    .set({ type: type as "farmer" | "customer", name, phone: phone ?? null })
+    .set({ type: type as "farmer" | "customer", name, phone: phone ?? null, region: region ?? null })
     .where(eq(contactsTable.id, id))
     .returning();
 

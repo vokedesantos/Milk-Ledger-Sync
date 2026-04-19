@@ -51,6 +51,7 @@ export interface Contact {
   type: ContactType;
   name: string;
   phone?: string | null;
+  region?: string | null;
   createdAt: string;
 }
 
@@ -66,6 +67,7 @@ export interface CreateContactBody {
   type: CreateContactBodyType;
   name: string;
   phone?: string | null;
+  region?: string | null;
 }
 
 export type RecordType = (typeof RecordType)[keyof typeof RecordType];
@@ -81,6 +83,7 @@ export interface Record {
   type: RecordType;
   personName: string;
   phone?: string | null;
+  region?: string | null;
   date: string;
   amountLitres: number;
   pricePerLitre: number;
@@ -102,6 +105,7 @@ export interface CreateRecordBody {
   type: CreateRecordBodyType;
   personName: string;
   phone?: string | null;
+  region?: string | null;
   date: string;
   amountLitres: number;
   pricePerLitre: number;

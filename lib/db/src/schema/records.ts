@@ -29,6 +29,7 @@ export const recordsTable = pgTable("records", {
   }).notNull(),
   totalPrice: numeric("total_price", { precision: 10, scale: 2 }).notNull(),
   phone: text("phone"),
+  region: text("region"),
   localId: text("local_id"),
   synced: boolean("synced").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),

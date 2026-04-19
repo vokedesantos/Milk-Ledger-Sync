@@ -431,6 +431,9 @@ components:
         phone:
           type: string
           nullable: true
+        region:
+          type: string
+          nullable: true
         createdAt:
           type: string
       required:
@@ -451,6 +454,9 @@ components:
         phone:
           type: string
           nullable: true
+        region:
+          type: string
+          nullable: true
       required:
         - type
         - name
@@ -468,6 +474,9 @@ components:
         personName:
           type: string
         phone:
+          type: string
+          nullable: true
+        region:
           type: string
           nullable: true
         date:
@@ -506,6 +515,9 @@ components:
         personName:
           type: string
         phone:
+          type: string
+          nullable: true
+        region:
           type: string
           nullable: true
         date:
